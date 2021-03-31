@@ -24,17 +24,18 @@ def bisection(a, b, e, f):
         c = (a + b)/2
         fa = f(a)
         fc = f(c)
-        row.extend([a, b, c, fa, fc, '{}'.format(b-c),
+        bc = b-c
+        row.extend([a, b, c, fa, fc, bc,
             'b = c' if fa * fc <= 0  else 'a = c'])
         data.append(row)
 
-        if b - c <= e or round(b - c, 4) <= e:
+        if bc <= e or round(bc, 4) <= e:
             print(tabulate(data, headers=headers, floatfmt=floatformat,
                 tablefmt='fancy_grid'))
             wrapper_printer(b, c, e)
             condition = False
 
-        if f(a) * f(c) <= 0:
+        if fa * fc <= 0:
             b = c
         else:
             a = c

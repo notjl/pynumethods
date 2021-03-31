@@ -9,7 +9,7 @@ headers = ['[I]', 'a', 'b', 'c', 'f(a)', 'f(c)', '(b-c)', 'swap']
 floatformat = (None, '.4f', '.4f', '.4f', '.4f', '.4f', '.4f', None)
 
 
-def wrapper_printer(b, c, e):
+def wrapper_printer(b=0, c=0, e=0):
     print(f'\n\nSince {b-c:.4f} <= {e:.4f}, c is the root.')
 
 
@@ -71,6 +71,8 @@ if __name__ == '__main__':
                 print(f'Expected iteration: {round(log((b-a)/epsilon)/log(b), 1)}\n\n')
             except (ZeroDivisionError, ValueError) as ex:
                 print(f'Expected iteration: N/A || Reason: {ex}\n\n')
+            except Exception as ex:
+                print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
 
             start = default_timer()
             print(f'The root is: {bisection(a, b, epsilon, formula):.4f}\n')

@@ -4,7 +4,7 @@ from timeit import default_timer
 from numba import jit
 from scipy.misc import derivative
 from tabulate import tabulate
-from errorhandler import InfiniteIteration
+from error_handler import InfiniteIteration
 
 headers = ['[I]', 'Xn', 'f(Xn)', 'f\'(Xn)', '%e']
 floatformat = (None, '.4f', '.4f', '.4f', '.4f')
@@ -16,7 +16,7 @@ def wrapper_printer(count=0,fpXn=0, error=0, mode='default'):
     elif mode == 'converge':
         print(f'\n\nSince {fpXn:.4f} is converging , Xn is the root')
     elif mode == 'infinite' or mode == 'indefinite':
-        print(f'\n\nSince iteration >= 99, it is assumed it as an indefinite function.')
+        print(f'\n\nSince I[{count}] >= 99, it is assumed it as an indefinite function.')
         print('Resulting in no definite or approximite root.')
         print('Re-check the function if it is correct.\n')
 
@@ -51,8 +51,6 @@ def newton_raphson(f, n):
             wrapper_printer(fpXn=fpXn, mode='converge')
             condition = False
         elif count == 99:
-            # print(tabulate(data, headers=headers, floatfmt=floatformat,
-            #    tablefmt='fancy_grid'))
             wrapper_printer(count=count, mode='indefinite')
             condition = False
             raise InfiniteIteration
@@ -74,12 +72,16 @@ if __name__ == '__main__':
         n = float(input('Xn >> '))
 
         try:
-            print('\n\nITERATION:')
             start = default_timer()
-            print(f'The root is: {newton_raphson(formula, n):.4f}\n')
-            print(f'Computation took {round(default_timer() - start, 3)} ',
+            try:
+                print(f'The root is: {newton_raphson(formula, n):.4f}\n')
+                print(f'Computation took {round(default_timer() - start, 3)} ',
                 end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
+            except InfiniteIteration:
+                print('ERROR: InfiniteIteration / IndefiniteFunction\n')
         except ZeroDivisionError as ex:
-            print(f'There is a problem. ERROR: {ex}')
+            print(f'\nThere is a problem. ERROR: {ex}')
+        except Exception as ex:
+            print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
         finally:
             print('----------------------------------------------------------------\n')

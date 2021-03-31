@@ -64,8 +64,11 @@ if __name__ == '__main__':
             print('f(a) and f(b) has different signs\n\n')
 
             start = default_timer()
-            print(f'The root is: {false_position(a=a, b=b, f=formula):.4f}\n')
-            print(f'Computation took {round(default_timer() - start, 3)} ',
-                end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
+            try:
+                print(f'The root is: {false_position(a=a, b=b, f=formula):.4f}\n')
+                print(f'Computation took {round(default_timer() - start, 3)} ',
+                    end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
+            except Exception as ex:
+                print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
 
         print('-----------------------------------------------------------------------------------------------\n')

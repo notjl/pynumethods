@@ -3,43 +3,62 @@ from timeit import default_timer
 
 from numba import jit
 from scipy.misc import derivative
+from tabulate import tabulate
+from errorhandler import InfiniteIteration
+
+headers = ['[I]', 'Xn', 'f(Xn)', 'f\'(Xn)', '%e']
+floatformat = (None, '.4f', '.4f', '.4f', '.4f')
 
 
-def wrapper_printer(count=0, n=0, fXn=0, fpXn=0, error=0, mode='default'):
+def wrapper_printer(count=0,fpXn=0, error=0, mode='default'):
     if mode == 'default':
-        print(f'I[{count:2}]: Xn = {n:.4f}, f(Xn) = {fXn:.4f}, '
-                f'f\'(Xn) = {fpXn:.4f}, %e = ',
-                end='------\n' if count == 0 else f'{error:.4f}%\n')
-    elif mode == '0.0':
         print(f'\n\nSince {error:.4f}% = 0.0000%, Xn is the root')
     elif mode == 'converge':
-        print(f'\n\nSince {fpXn:.4f} is converging, Xn is the root')
+        print(f'\n\nSince {fpXn:.4f} is converging , Xn is the root')
+    elif mode == 'infinite' or mode == 'indefinite':
+        print(f'\n\nSince iteration >= 99, it is assumed it as an indefinite function.')
+        print('Resulting in no definite or approximite root.')
+        print('Re-check the function if it is correct.\n')
 
 
 @jit(forceobj=True)
 def newton_raphson(f, n):
+    data = []
     count = 0
     prev_n = 0
     condition = True
 
     while condition:
+        row = [count]
         fXn = f(n)
         fpXn = derivative(func=f, x0=n, dx=1e-5)
         error = abs(((n - prev_n)/n) * 100)
-        wrapper_printer(count, n, fXn, fpXn, error)
+
+        row.extend([n, fXn, fpXn, round(error, 4) if count > 0 else '--------'])
+        data.append(row)
+
         prev_n = n
         n = n - (fXn/fpXn)
         
         if isclose(round(error, 4), 0.0000, rel_tol=1e-4):
-            wrapper_printer(error=error, mode='0.0')
+            print(tabulate(data, headers=headers, floatfmt=floatformat,
+                tablefmt='fancy_grid'))
+            wrapper_printer(error=error)
             condition = False
         elif isclose(round(fpXn, 4), round(derivative(func=f, x0=n), 4), rel_tol=1e-4):
+            print(tabulate(data, headers=headers, floatfmt=floatformat,
+                tablefmt='fancy_grid'))
             wrapper_printer(fpXn=fpXn, mode='converge')
             condition = False
-        if count == 10:
+        elif count == 99:
+            # print(tabulate(data, headers=headers, floatfmt=floatformat,
+            #    tablefmt='fancy_grid'))
+            wrapper_printer(count=count, mode='indefinite')
             condition = False
+            raise InfiniteIteration
 
         count += 1
+        
     return n
 
 

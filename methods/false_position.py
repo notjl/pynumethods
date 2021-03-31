@@ -2,33 +2,38 @@ from math import isclose
 from timeit import default_timer
 
 from numba import jit
+from tabulate import tabulate
+
+headers = ['[I]', 'a', 'b', 'f(a)', 'f(b)', 'c', 'f(c)', 'CoS']
+floatformat = (None, '.4f', '.4f', '.4f', '.4f', '.4f', '.4f', None)
 
 
-def wrapper_printer(count=0, a=0, b=0, fa=0, fb=0, c=0, fc=0, mode='default'):
-    if mode == 'default':
-        print(f'I[{count:2}]: a = {a:.4f}, b = {b:.4f}, f(a) = {fa:.4f},',
-            f' f(b) = {fb:.4f}, c = {c:.4f}, f(c) = {fc:.4f}, CoS: ',
-            end="-\n" if fa * fc <= 0 else "+\n")
-    elif mode == 'converge':
-        print(f'\n\nSince {b:.4f} is converging with {c:.4f}, c is the root')
+def wrapper_printer(b=0, c=0):
+    print(f'\n\nSince {b:.4f} is converging with {c:.4f}, c is the root')
 
 
 @jit(forceobj=True)
 def false_position(a, b, f):
+    data = []
     count = 1
     condition = True
 
-    print('ITERATION:')
     while condition:
-        c = (a*f(b) - b*f(a))/(f(b)-f(a))
-
-        wrapper_printer(count, a, b, f(a), f(b), c, f(c))
+        row = [count]
+        fa = f(a)
+        fb = f(b)
+        c = (a*fb - b*fa)/(fb-fa)
+        fc = f(c)
+        row.extend([a, b, fa, fb, c, fc, '-' if fa * fc <= 0 else '+'])
+        data.append(row)
 
         if isclose(b, c, rel_tol=1e-4):
-            wrapper_printer(b=b, c=c, mode='converge')
+            print(tabulate(data, headers=headers, floatfmt=floatformat,
+                tablefmt='fancy_grid'))
+            wrapper_printer(b=b, c=c)
             condition = False
 
-        if f(a) * f(c) <= 0:
+        if fa * fc <= 0:
             b = c
         else:
             a = c

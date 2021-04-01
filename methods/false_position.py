@@ -64,8 +64,8 @@ def main():
                 end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
         except Exception as ex:
             print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
-
-    print('-----------------------------------------------------------------------------------------------\n')
+        finally:
+            print('-----------------------------------------------------------------------------------------------\n')
 
 
 if __name__ == '__main__':

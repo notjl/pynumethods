@@ -1,3 +1,5 @@
+from math import *
+
 from tabulate import tabulate
 
 headers = ['[I]']
@@ -8,10 +10,18 @@ class Formula:
     def __init__(self, formula: str, n: float):
         self.formula = formula
         self.curr_Xn = n
-        self.prev_Xn = 0
+        self.prev_Xn = 0.0
+        self.error = self.e()
+        self.flag = True
 
-    def f(self) -> float:
-        return eval(self.formula)
+    def f(self):
+        x = self.curr_Xn
+        self.prev_Xn = self.curr_Xn
+        self.curr_Xn = eval(self.formula)
+        self.e()
+
+    def e(self):
+        self.error = round(abs(((self.curr_Xn-self.prev_Xn)/self.curr_Xn)*100), 4)
 
 
 def fixed_point(formulae: list) -> list:
@@ -21,14 +31,19 @@ def fixed_point(formulae: list) -> list:
 
     while condition:
         row = [count]
+
         for i in range(len(formulae)):
             row.append(formulae[i].curr_Xn)
-            row.append(100.0)
+            row.append(formulae[i].error)
+            formulae[i].f()
+            
         data.append(row)
-        count += 1
-        condition = False
 
-    print(tabulate(data, headers=headers, floatfmt=floatformat))
+        if count == 5:
+            print(tabulate(data, headers=headers, floatfmt=floatformat))
+            condition = False
+
+        count += 1
 
 
 if __name__ == '__main__':
@@ -41,4 +56,5 @@ if __name__ == '__main__':
         formulae.append(Formula(formula=f, n=n))
         headers.extend([f'{chr(ord("f")+i)}(x)', f'{chr(ord("f")+i)}(x) %e'])
         floatformat.extend(['.4f', '.4f'])
+
     fixed_point(formulae=formulae)

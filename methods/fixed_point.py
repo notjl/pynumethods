@@ -1,5 +1,5 @@
 class Formula:
-    def __init__(self, formula, n):
+    def __init__(self, formula: str, n: float):
         self.formula = formula
         self.curr_Xn = n
         self.prev_Xn = 0
@@ -8,13 +8,18 @@ class Formula:
         return eval(self.formula)
 
 
-def fixed_point(formula_list):
+def fixed_point(formulae: list) -> list:
     pass
 
 
 if __name__ == '__main__':
-    formula_list = []
-    for i in range(5):
-        formula_list.append(Formula(input('Formula >> '), float(input('Xn >> '))))
-    for i in range(5):
-        print(f'{chr(ord("f") + i)}(x) = {formula_list[i].formula}, Xn = {formula_list[i].curr_Xn}')
+    formulae = []
+    formula_range = int(input('How many possible iterative formula? '))
+    n = float(input('Xn >> '))
+
+    for i in range(formula_range):
+        f = input(f'{chr(ord("f")+i)}(x) >> ')
+        formulae.append(Formula(formula=f, n=n))
+
+    for i in range(formula_range):
+        print(f'{chr(ord("f")+i)}(x) = {formulae[i].formula}, Xn = {formulae[i].curr_Xn}')

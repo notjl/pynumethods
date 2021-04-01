@@ -43,32 +43,30 @@ def false_position(a, b, f):
     return c
 
 
+def main():
+    fx = input('Formula >> ')
+    formula = lambda x: eval(fx)
+    a = float(input('a Value >> '))
+    b = float(input('b Value >> '))
+
+    if formula(a) * formula(b) > 0.0:
+        print(f'\nf(a) = {formula(a):.4f}, f(b) = {formula(b):.4f}')
+        print('f(a) and f(b) should have different signs')
+        print('Try again with different values...\n\n')
+    else:
+        print(f'\nf(a) = {formula(a):.4f}, f(b) = {formula(b):.4f}')
+        print('f(a) and f(b) has different signs\n\n')
+
+        start = default_timer()
+        try:
+            print(f'The root is: {false_position(a=a, b=b, f=formula):.4f}\n')
+            print(f'Computation took {round(default_timer() - start, 3)} ',
+                end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
+        except Exception as ex:
+            print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
+
+    print('-----------------------------------------------------------------------------------------------\n')
+
+
 if __name__ == '__main__':
-    while 1:
-        fx = input('Formula >> ')
-
-        if fx.lower() == 'exit':
-            print('Exiting...')
-            break
-
-        formula = lambda x: eval(fx)
-        a = float(input('a Value >> '))
-        b = float(input('b Value >> '))
-
-        if formula(a) * formula(b) > 0.0:
-            print(f'\nf(a) = {formula(a):.4f}, f(b) = {formula(b):.4f}')
-            print('f(a) and f(b) should have different signs')
-            print('Try again with different values...\n\n')
-        else:
-            print(f'\nf(a) = {formula(a):.4f}, f(b) = {formula(b):.4f}')
-            print('f(a) and f(b) has different signs\n\n')
-
-            start = default_timer()
-            try:
-                print(f'The root is: {false_position(a=a, b=b, f=formula):.4f}\n')
-                print(f'Computation took {round(default_timer() - start, 3)} ',
-                    end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
-            except Exception as ex:
-                print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
-
-        print('-----------------------------------------------------------------------------------------------\n')
+    main()

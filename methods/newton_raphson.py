@@ -60,28 +60,26 @@ def newton_raphson(f, n):
     return n
 
 
-if __name__ == '__main__':
-    while 1:
-        fx = input('Formula >> ')
+def main():
+    fx = input('Formula >> ')
+    formula = lambda x: eval(fx)
+    n = float(input('Xn >> '))
 
-        if fx.lower() == 'exit':
-            print('Exiting...')
-            break
-
-        formula = lambda x: eval(fx)
-        n = float(input('Xn >> '))
-
+    try:
+        start = default_timer()
         try:
-            start = default_timer()
-            try:
-                print(f'The root is: {newton_raphson(formula, n):.4f}\n')
-                print(f'Computation took {round(default_timer() - start, 3)} ',
+            print(f'The root is: {newton_raphson(formula, n):.4f}\n')
+            print(f'Computation took {round(default_timer() - start, 3)} ',
                 end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
-            except InfiniteIteration:
-                print('ERROR: InfiniteIteration / IndefiniteFunction\n')
-        except ZeroDivisionError as ex:
-            print(f'\nThere is a problem. ERROR: {ex}')
-        except Exception as ex:
-            print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
-        finally:
-            print('----------------------------------------------------------------\n')
+        except InfiniteIteration:
+            print('ERROR: InfiniteIteration / IndefiniteFunction\n')
+    except ZeroDivisionError as ex:
+        print(f'\nThere is a problem. ERROR: {ex}')
+    except Exception as ex:
+        print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
+    finally:
+        print('----------------------------------------------------------------\n')
+
+
+if __name__ == '__main__':
+    main()

@@ -45,38 +45,36 @@ def bisection(a, b, e, f):
     return c
 
 
+def main():
+    fx = input('Formula >> ')
+    formula = lambda x: eval(fx)
+    a = float(input('a Value >> '))
+    b = float(input('b Value >> '))
+    epsilon = float(input('Error Tolerance >> '))
+
+    if formula(a) * formula(b) > 0.0:
+        print(f'\nf(a) = {formula(a):.4f}, f(b) = {formula(b):.4f}')
+        print('f(a) and f(b) should have different signs')
+        print('Try again with different values...\n\n')
+    else:
+        print(f'\nf(a) = {formula(a):.4f}, f(b) = {formula(b):.4f}')
+        print('f(a) and f(b) has different signs')
+
+        try:
+            print(f'n = {log((b-a)/epsilon)/log(b):.4f}')
+            print(f'Expected iteration: {round(log((b-a)/epsilon)/log(b), 1)}\n\n')
+        except (ZeroDivisionError, ValueError) as ex:
+            print(f'Expected iteration: N/A || Reason: {ex}\n\n')
+        except Exception as ex:
+            print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
+
+        start = default_timer()
+        print(f'The root is: {bisection(a, b, epsilon, formula):.4f}\n')
+        print(f'Computation took {round(default_timer() - start, 3)} ',
+            end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
+            
+    print('-----------------------------------------------------------------------------------------------\n')
+
+
 if __name__ == '__main__':
-    while 1:
-        fx = input('Formula >> ')
-
-        if fx.lower() == 'exit':
-            print('Exiting...')
-            break
-
-        formula = lambda x: eval(fx)
-        a = float(input('a Value >> '))
-        b = float(input('b Value >> '))
-        epsilon = float(input('Error Tolerance >> '))
-
-        if formula(a) * formula(b) > 0.0:
-            print(f'\nf(a) = {formula(a):.4f}, f(b) = {formula(b):.4f}')
-            print('f(a) and f(b) should have different signs')
-            print('Try again with different values...\n\n')
-        else:
-            print(f'\nf(a) = {formula(a):.4f}, f(b) = {formula(b):.4f}')
-            print('f(a) and f(b) has different signs')
-
-            try:
-                print(f'n = {log((b-a)/epsilon)/log(b):.4f}')
-                print(f'Expected iteration: {round(log((b-a)/epsilon)/log(b), 1)}\n\n')
-            except (ZeroDivisionError, ValueError) as ex:
-                print(f'Expected iteration: N/A || Reason: {ex}\n\n')
-            except Exception as ex:
-                print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
-
-            start = default_timer()
-            print(f'The root is: {bisection(a, b, epsilon, formula):.4f}\n')
-            print(f'Computation took {round(default_timer() - start, 3)} ',
-                end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
-                
-        print('-----------------------------------------------------------------------------------------------\n')
+    main()

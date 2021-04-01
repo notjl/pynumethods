@@ -83,7 +83,7 @@ def fixed_point(formulae: list) -> list:
         count += 1
 
 
-if __name__ == '__main__':
+def main():
     formulae = []
     formula_range = int(input('How many possible iterative formula? '))
     n = float(input('Xn >> '))
@@ -104,4 +104,9 @@ if __name__ == '__main__':
 
     print(f'Computation took {round(default_timer() - start, 3)} ',
     end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
+    
     print('----------------------------------------------------------------\n')
+
+
+if __name__ == '__main__':
+    main()

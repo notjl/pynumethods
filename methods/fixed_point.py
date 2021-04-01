@@ -2,6 +2,7 @@ from timeit import default_timer
 from math import *
 
 from tabulate import tabulate
+from error_handler import error_printer, InfiniteIteration
 
 headers = ['[I]']
 floatformat = [None]
@@ -79,6 +80,10 @@ def fixed_point(formulae: list) -> list:
             for i in range(len(formulae)):
                 formulae[i].wrapper_printer()
             condition = False
+        elif count >= 99:
+            error_printer(count=count)
+            condition = False
+            raise InfiniteIteration
 
         count += 1
 
@@ -95,17 +100,22 @@ def main():
         floatformat.extend(['.4f', '.4f'])
 
     start = default_timer()
-    fixed_point(formulae=formulae)
-    print('The roots are: ', end='')
+    try:
+        fixed_point(formulae=formulae)
+        print('The roots are: ', end='')
 
-    for i in range(formula_range):
-        if formula_range > 1:
-            print(end=f'{formulae[i].root:.4f}, ' if formula_range-1 != i else f'{formulae[i].root:.4f}\n\n')
+        for i in range(formula_range):
+            if formula_range > 1:
+                print(end=f'{formulae[i].root:.4f}, ' if formula_range-1 != i else f'{formulae[i].root:.4f}\n\n')
 
-    print(f'Computation took {round(default_timer() - start, 3)} ',
-    end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
-    
-    print('----------------------------------------------------------------\n')
+        print(f'Computation took {round(default_timer() - start, 3)} ',
+        end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
+    except InfiniteIteration:
+        print('ERROR: InfiniteIteration / IndefiniteFunction\n')
+    except Exception as ex:
+        print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
+    finally:
+        print('----------------------------------------------------------------\n')
 
 
 if __name__ == '__main__':

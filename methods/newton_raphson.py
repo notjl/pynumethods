@@ -34,7 +34,7 @@ def newton_raphson(f, n):
         fpXn = derivative(func=f, x0=n, dx=1e-5)
         error = abs(((n - prev_n)/n) * 100)
 
-        row.extend([n, fXn, fpXn, round(error, 4) if count > 0 else '--------'])
+        row.extend([n, fXn, fpXn, round(error, 4)])
         data.append(row)
 
         prev_n = n

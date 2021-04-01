@@ -1,7 +1,6 @@
 from math import isclose
 from timeit import default_timer
 
-from numba import jit
 from tabulate import tabulate
 
 headers = ['[I]', 'a', 'b', 'f(a)', 'f(b)', 'c', 'f(c)', 'CoS']
@@ -12,7 +11,6 @@ def wrapper_printer(b=0, c=0):
     print(f'\n\nSince {b:.4f} is converging with {c:.4f}, c is the root')
 
 
-@jit(forceobj=True)
 def false_position(a, b, f):
     data = []
     count = 1
@@ -29,7 +27,7 @@ def false_position(a, b, f):
 
         if isclose(b, c, rel_tol=1e-4):
             print(tabulate(data, headers=headers, floatfmt=floatformat,
-                tablefmt='fancy_grid'))
+                           tablefmt='fancy_grid'))
             wrapper_printer(b=b, c=c)
             condition = False
 
@@ -37,15 +35,15 @@ def false_position(a, b, f):
             b = c
         else:
             a = c
-        
+
         count += 1
-        
+
     return c
 
 
 def main():
     fx = input('Formula >> ')
-    formula = lambda x: eval(fx)
+    def formula(x): return eval(fx)
     a = float(input('a Value >> '))
     b = float(input('b Value >> '))
 
@@ -61,7 +59,7 @@ def main():
         try:
             print(f'The root is: {false_position(a=a, b=b, f=formula):.4f}\n')
             print(f'Computation took {round(default_timer() - start, 3)} ',
-                end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
+                  end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
         except Exception as ex:
             print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
         finally:

@@ -2,7 +2,6 @@ from math import isclose
 from math import log
 from timeit import default_timer
 
-from numba import jit
 from tabulate import tabulate
 
 headers = ['[I]', 'a', 'b', 'c', 'f(a)', 'f(c)', '(b-c)', 'swap']
@@ -13,7 +12,6 @@ def wrapper_printer(b=0, c=0, e=0):
     print(f'\n\nSince {b-c:.4f} <= {e:.4f}, c is the root.')
 
 
-@jit(forceobj=True)
 def bisection(a, b, e, f):
     data = []
     count = 1
@@ -26,12 +24,12 @@ def bisection(a, b, e, f):
         fc = f(c)
         bc = b-c
         row.extend([a, b, c, fa, fc, bc,
-            'b = c' if fa * fc <= 0  else 'a = c'])
+                    'b = c' if fa * fc <= 0 else 'a = c'])
         data.append(row)
 
         if bc <= e or round(bc, 4) <= e:
             print(tabulate(data, headers=headers, floatfmt=floatformat,
-                tablefmt='fancy_grid'))
+                           tablefmt='fancy_grid'))
             wrapper_printer(b, c, e)
             condition = False
 
@@ -39,7 +37,7 @@ def bisection(a, b, e, f):
             b = c
         else:
             a = c
-        
+
         count += 1
 
     return c
@@ -47,7 +45,7 @@ def bisection(a, b, e, f):
 
 def main():
     fx = input('Formula >> ')
-    formula = lambda x: eval(fx)
+    def formula(x): return eval(fx)
     a = float(input('a Value >> '))
     b = float(input('b Value >> '))
     epsilon = float(input('Error Tolerance >> '))
@@ -62,7 +60,8 @@ def main():
 
         try:
             print(f'n = {log((b-a)/epsilon)/log(b):.4f}')
-            print(f'Expected iteration: {round(log((b-a)/epsilon)/log(b), 1)}\n\n')
+            print(
+                f'Expected iteration: {round(log((b-a)/epsilon)/log(b), 1)}\n\n')
         except (ZeroDivisionError, ValueError) as ex:
             print(f'Expected iteration: N/A || Reason: {ex}\n\n')
         except Exception as ex:
@@ -72,7 +71,7 @@ def main():
             start = default_timer()
             print(f'The root is: {bisection(a, b, epsilon, formula):.4f}\n')
             print(f'Computation took {round(default_timer() - start, 3)} ',
-                end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
+                  end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
         except Exception as ex:
             print(f'\nNon-mathematic problem encountered. ERROR: {ex}')
         finally:

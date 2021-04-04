@@ -1,5 +1,6 @@
 from math import isclose
 from timeit import default_timer
+from typing import Tuple
 
 from .error_handler import InfiniteIteration, error_printer
 from sympy import Symbol, sympify, diff
@@ -23,11 +24,11 @@ def wrapper_printer(fpXn=0, error=0, mode='default'):
         print(f'\n\nSince {fpXn:.4f} is converging , Xn is the root')
 
 
-def newton_raphson(f: Function, n: int, tabulate: bool = False,
+def newton_raphson(f: Function, n: float, tabulate: bool = False,
                    conclude: bool = False, rational: bool = False,
-                   main_flag: bool = False) -> float:
+                   main_flag: bool = False) -> Tuple[float, list]:
     """
-    Using Newton-Raphson method, it returns the root.
+    Using Newton-Raphson method, returns a tuple (root, iterated data).
     - Utilizes the derivative of f(x)
     - is an open method that finds the root x of a function such that f(x)
 
@@ -124,7 +125,7 @@ def newton_raphson(f: Function, n: int, tabulate: bool = False,
 
         count += 1
 
-    return float(n) if not rational else n
+    return (float(n) if not rational else n, data)
 
 
 def main():

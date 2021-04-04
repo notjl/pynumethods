@@ -6,7 +6,7 @@ class InfiniteIteration(Error):
     '''Raised when the iteration reaches 99 or greater'''
     pass
 
-def error_printer(mode='default', count=0):
+def error_printer(mode='default', count=99):
     if mode == 'default':
         print(f'\n\nSince I[{count}] >= 99, it is assumed it as an indefinite function.')
         print('Resulting in no definite or approximite root.')

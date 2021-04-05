@@ -18,11 +18,11 @@ $ python
 ```
 
 ## Planned features:
-* GUI wrapper for the library
+- [ ] GUI utilising the library
+- [ ] More methods? (We haven't tackled 2/3 of our module 😛)
 
 ## Contributing
-Currently I have no plans on fixing any issues or updating this since it is mostly used for
-my university needs.
+You can reach out to me by DM'ing me on Discord or Twitter. (As of now, I don't think I would bother fixing this because it really is just for university needs)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

@@ -109,6 +109,7 @@ def bisection(f: Function, a: float, b: float, error: float,
 
     iterated_data:
         - Returns the iterated data in dictionary
+        - Defaults to False
     """
 
     f = parse_expr(f, transformations=transformations)

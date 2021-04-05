@@ -95,6 +95,7 @@ def newton_raphson(f: Function, n: float, rational: bool = False,
 
     iterated_data:
         - Returns the iterated data in dictionary
+        - Defaults to False
     """
     f = parse_expr(f, transformations=transformations)
     n = sympify(n)

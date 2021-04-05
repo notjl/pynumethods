@@ -107,7 +107,7 @@ def fixed_point(f: Function, n: float, rational: bool = False,
     prev_n = 0
 
     while True:
-        error = (((n-prev_n)/n)*100)
+        error = abs(((n-prev_n)/n)*100)
         data[count] = {'Xn': n, 'e%': error if count > 0 else None}
 
         prev_n = n

@@ -107,7 +107,7 @@ def newton_raphson(f: Function, n: float, rational: bool = False,
     while True:
         fXn = f.subs(x, n)
         fpXn = fp.subs(x, n)
-        error = (((n-prev_n)/n)*100)
+        error = abs(((n-prev_n)/n)*100)
 
         data[count] = {'Xn': n, 'fx': fXn, 'fpx': fpXn,
                        'e%': error if count > 0 else None}

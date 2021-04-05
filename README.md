@@ -2,9 +2,9 @@
 A Python library for root finding with various numerical methods.
 
 ## How to use
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the library
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the library required
 ```bash
-pip install pynumethods
+pip install -r requirements.txt
 ```
 
 ## Usage
@@ -12,7 +12,7 @@ You can use it by running one of the script.
 `For Example:`
 ```bash
 $ python
->>> from pynumethods.bracketing import bisection
+>>> from .methods.bracketing import bisection
 >>> bisection('x^2-8x+11', 1, 2, 0.001)
 1.7646484375
 ```

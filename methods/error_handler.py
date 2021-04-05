@@ -2,6 +2,14 @@ class Error(Exception):
     '''Base class for custom errors'''
     pass
 
+
+class SameSigns(Exception):
+    '''Raised when values of f(a) and f(b) has the same sign'''
+    def __init__(self, message='f(a) and f(b) values has the same sign') -> None:
+        self.message = message
+        super().__init__(self.message)
+
+
 class InfiniteIteration(Error):
     '''Raised when the iteration reaches 99 or greater'''
     pass

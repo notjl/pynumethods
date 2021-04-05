@@ -72,9 +72,6 @@ def false_position(f: Function, a: float, b: float, rational: bool = False,
 
     fc :
         - Value of the f(c)
-    
-    CoS :
-        - Change of signs [Obsolete]
 
     Exceptions
     ==========
@@ -124,7 +121,7 @@ def false_position(f: Function, a: float, b: float, rational: bool = False,
         fc = f.subs(x, c)
 
         data[count] = {'a': a, 'b': b, 'fa': fa, 'fb': fb, 'c': c,
-                       'fc': fc, 'CoS': '-' if fa*fc <= 0 else '+'}
+                       'fc': fc}
         
         if isclose(b, c, rel_tol=1e-4):
             break

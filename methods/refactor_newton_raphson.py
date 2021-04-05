@@ -120,7 +120,7 @@ def newton_raphson(f: Function, n: float, rational: bool = False,
             break
         elif isclose(fpXn, fp.subs(x, n), rel_tol=1e-4):
             break
-        elif count == 99:
+        elif count >= 99:
             raise InfiniteIteration
 
         count += 1

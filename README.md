@@ -1,27 +1,24 @@
 # Numerical Methods
-A Python library for dealing with various numerical methods.
+A Python library for root finding with various numerical methods.
 
 ## How to use
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the required modules
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the library
 ```bash
-pip install -r requirements.txt
+pip install pynumethods
 ```
 
 ## Usage
 You can use it by running one of the script.
 `For Example:`
 ```bash
-$ python methods/fixed_point.py
-How many possible iterative formula? 3
-Xn >> 3
-f(x) >> (x**2+11)/8
-g(x) >> sqrt(8*x-11)
-h(x) >> (8*x-11)/x
-...
+$ python
+>>> from pynumethods.bracketing import bisection
+>>> bisection('x^2-8x+11', 1, 2, 0.001)
+1.7646484375
 ```
 
 ## Planned features:
-* "Do not tabulate" flags
+* GUI wrapper for the library
 
 ## Contributing
 Currently I have no plans on fixing any issues or updating this since it is mostly used for

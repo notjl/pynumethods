@@ -1,39 +1,43 @@
 from math import isclose
-from timeit import default_timer
-from typing import Tuple
+from typing import Tuple, Union
 
-from .error_handler import InfiniteIteration, error_printer
-from sympy import Symbol, sympify, diff
+from sympy import Symbol, diff, sympify
 from sympy.core.function import Function
-from sympy.parsing.sympy_parser import implicit_multiplication_application, \
-    parse_expr, standard_transformations, convert_xor, function_exponentiation
-from tabulate import tabulate
+from sympy.parsing.sympy_parser import (convert_xor, function_exponentiation,
+                                        implicit_multiplication_application,
+                                        parse_expr, standard_transformations)
 
-headers = ['[I]', 'Xn', 'f(Xn)', 'f\'(Xn)', '%e']
-floatformat = (None, '.4f', '.4f', '.4f', '.4f')
+from .error_handler import InfiniteIteration
 
 x = Symbol('x')
 transformations = standard_transformations + \
     (convert_xor, implicit_multiplication_application, function_exponentiation)
 
 
-def wrapper_printer(fpXn=0, error=0, mode='default'):
-    if mode == 'default':
-        print(f'\n\nSince {error:.4f}% = 0.0000%, Xn is the root')
-    elif mode == 'converge':
-        print(f'\n\nSince {fpXn:.4f} is converging , Xn is the root')
+# def wrapper_printer(fpXn=0, error=0, mode='default'):
+#     if mode == 'default':
+#         print(f'\n\nSince {error:.4f}% = 0.0000%, Xn is the root')
+#     elif mode == 'converge':
+#         print(f'\n\nSince {fpXn:.4f} is converging , Xn is the root')
 
 
-def newton_raphson(f: Function, n: float, tabulate: bool = False,
-                   conclude: bool = False, rational: bool = False,
-                   main_flag: bool = False) -> Tuple[float, list]:
+def newton_raphson(f: Function, n: float, rational: bool = False,
+                   iterated_data: bool = False) -> Union[float, Tuple[float, list]]:
     """
-    Using Newton-Raphson method, returns a tuple (root, iterated data).
+    Using Newton-Raphson method, returns float (or tupled with iterated data).
     - Utilizes the derivative of f(x)
     - is an open method that finds the root x of a function such that f(x)
 
-    ..WARNING:
+    ..Note:
+        - Return iterated_data defaults to False
         - Always use 'x' as a symbol
+
+    Algorithm
+    =========
+    1. Solve f(x), f'(x), error %
+    2. n = n - (f(x)/f'(x))
+    3. if error % is converging to 0, return n as root
+    4. if previous f'(x) is converging to next f'(x), return n as root
 
     Examples
     ========
@@ -51,6 +55,12 @@ def newton_raphson(f: Function, n: float, tabulate: bool = False,
     >>> newton_raphson('x^2-8x+11', 1, rational=True)
     3842389/2178309
 
+    Exceptions
+    ==========
+    InfiniteIteration :
+        - Raised when the function passed is indefinite and
+        iteration reaches 99, assuming it is indefinite.
+
     Parameters
     ==========
     f :
@@ -65,90 +75,45 @@ def newton_raphson(f: Function, n: float, tabulate: bool = False,
     n :
         - the 'x' value of the function
 
-    tabulate :
-        - Tabulates the data, showing the iterated values
-        - Defaults to False
-
-    conclude :
-        - Prints the conclusion why it stopped iterating
-        - Defaults to False
-
     rational :
         - Returns fraction/rational value
         - Defaults to False
 
-    main_flag :
-        - Only used when using the __name__ == '__main__'
-        - Remember to change 'from .error_handler' to 'from error_handler'
-        - Defaults to False
+    iterated_data:
+        - Returns the iterated data in dictionary
     """
+    f = parse_expr(f, transformations=transformations)
+    n = sympify(n)
 
-    if not main_flag:
-        f = parse_expr(f, transformations=transformations)
-        n = sympify(n)
-
-    data = []
+    data = {}
     count = 0
     prev_n = 0
     fp = diff(f, x)
 
     while True:
-        row = [count]
         fXn = f.subs(x, n)
         fpXn = fp.subs(x, n)
         error = (((n-prev_n)/n)*100)
 
-        row.extend([n, fXn, fpXn, error if count > 0 else None])
-        data.append(row)
+        data[count] = {'Xn': n, 'fx': fXn, 'fpx': fpXn,
+                       'e%': error if count > 0 else None}
 
         prev_n = n
         n = n - (fXn/fpXn)
 
         if isclose(round(error, 4), 0.0, rel_tol=1e-4):
-            if tabulate:
-                print(tabulate(data, headers=headers, floatfmt=floatformat,
-                               tablefmt='fancy_grid'))
-            if conclude:
-                wrapper_printer(error=error)
             break
         elif isclose(fpXn, fp.subs(x, n), rel_tol=1e-4):
-            if tabulate:
-                print(tabulate(data, headers=headers, floatfmt=floatformat,
-                               tablefmt='fancy_grid'))
-            if conclude:
-                wrapper_printer(fpXn=fpXn, mode='converge')
             break
         elif count == 99:
-            error_printer(count=count)
-            print('ERROR: InfiniteIteration / IndefiniteFunction\n')
             raise InfiniteIteration
 
         count += 1
 
-    return (float(n) if not rational else n, data)
+    if not rational:
+        n = float(n)
 
-
-def main():
-    formula = parse_expr(input('Formula >> '), transformations=transformations)
-    n = float(sympify(input('Xn >> ')))
-
-    if input('Tabulate? [y|Default: n] >> ').lower() == 'y':
-        tabulate = True
+    if iterated_data:
+        return n, data
     else:
-        tabulate = False
-
-    if input('Show conclusion [y|Default: n] >> ').lower() == 'y':
-        conclude = True
-    else:
-        conclude = False
-
-    start = default_timer()
-    print(
-        f'The root is: {newton_raphson(f=formula, n=n, tabulate=tabulate, conclude=conclude, main_flag=True, rational=True): .4f}\n')
-    print(f'Computation took {round(default_timer() - start, 3)} ',
-          end='seconds\n' if round(default_timer() - start, 3) > 1.0 else 'ms\n')
-    print('-----------------------------------------------------------------------------------------------\n')
-
-
-if __name__ == '__main__':
-    main()
+        return n

@@ -131,7 +131,7 @@ def bisection(f: Function, a: float, b: float, error: float,
         a = b
         b = z
         del z
-    elif a > b and not swap:
+    elif a > b:
         raise AGreatB
 
     if f.subs(x, a) * f.subs(x, b) > 0.0:
@@ -276,7 +276,7 @@ def false_position(f: Function, a: float, b: float, rational: bool = False,
         a = b
         b = z
         del z
-    elif a > b and not swap:
+    elif a > b:
         raise AGreatB
 
     if f.subs(x, a) * f.subs(x, b) > 0.0:

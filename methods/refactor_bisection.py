@@ -1,13 +1,12 @@
-from math import log
-from timeit import default_timer
-from typing import Tuple
+from typing import Tuple, Union
 
-from .error_handler import SameSigns
 from sympy import Symbol, sympify
 from sympy.core.function import Function
-from sympy.parsing.sympy_parser import implicit_multiplication_application, \
-    parse_expr, standard_transformations, convert_xor, function_exponentiation
-from tabulate import tabulate
+from sympy.parsing.sympy_parser import (convert_xor, function_exponentiation,
+                                        implicit_multiplication_application,
+                                        parse_expr, standard_transformations)
+
+from .error_handler import SameSigns
 
 x = Symbol('x')
 transformations = standard_transformations + \
@@ -15,9 +14,9 @@ transformations = standard_transformations + \
 
 
 def bisection(f: Function, a: float, b: float, error: float,
-              rational: bool = False, iterated_data: bool = False) -> Tuple[float, dict]:
+              rational: bool = False, iterated_data: bool = False) -> Union[float, Tuple[float, dict]]:
     """
-    Using bisection method, returns tuple of root and iterated data.
+    Using bisection method, returns root (or tupled with iterated data).
     - Repeatedly bisects an interval and then selects a 
     sub-interval in which a root must lie for further 
     processing.

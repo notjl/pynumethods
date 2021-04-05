@@ -1,2 +1,6 @@
 .venv
 .vscode
+MANIFEST.in
+pynumethods.egg-info/
+dist/
+build/

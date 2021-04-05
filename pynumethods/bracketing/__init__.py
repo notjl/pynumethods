@@ -271,7 +271,7 @@ def false_position(f: Function, a: float, b: float, rational: bool = False,
     a = sympify(a)
     b = sympify(b)
 
-    if a > b:
+    if a > b and swap:
         z = a
         a = b
         b = z

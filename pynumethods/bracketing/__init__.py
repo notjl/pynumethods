@@ -6,7 +6,7 @@ from sympy.parsing.sympy_parser import (convert_xor, function_exponentiation,
                                         implicit_multiplication_application,
                                         parse_expr, standard_transformations)
 
-from ..error_handler import SameSigns
+from ..error_handler import AGreatB, SameSigns
 
 x = Symbol('x')
 transformations = standard_transformations + \
@@ -14,7 +14,8 @@ transformations = standard_transformations + \
 
 
 def bisection(f: Function, a: float, b: float, error: float,
-              rational: bool = False, iterated_data: bool = False) -> Union[float, Tuple[float, dict]]:
+              rational: bool = False, swap: bool = False,
+              iterated_data: bool = False) -> Union[float, Tuple[float, dict]]:
     """
     Using bisection method, returns root (or tupled with iterated data).
     - Repeatedly bisects an interval and then selects a 
@@ -82,6 +83,10 @@ def bisection(f: Function, a: float, b: float, error: float,
     ==========
     SameSign :
         - Raised when values of f(a) and f(b) has the same sign
+    
+    AGreatB :
+        - Raised when the value of a is greater than b
+        - [Optional flag] - Swap the values
 
     Parameters
     ==========
@@ -107,6 +112,10 @@ def bisection(f: Function, a: float, b: float, error: float,
         - Returns fraction/rational value
         - Defaults to False
 
+    swap :
+        - Flag to prevent AGreatB Exception
+        - Defaults to False
+
     iterated_data:
         - Returns the iterated data in dictionary
         - Defaults to False
@@ -116,6 +125,14 @@ def bisection(f: Function, a: float, b: float, error: float,
     a = sympify(a)
     b = sympify(b)
     error = sympify(error)
+
+    if a > b and swap:
+        z = a
+        a = b
+        b = z
+        del z
+    else:
+        raise AGreatB
 
     if f.subs(x, a) * f.subs(x, b) > 0.0:
         raise SameSigns
@@ -152,7 +169,7 @@ def bisection(f: Function, a: float, b: float, error: float,
 
 
 def false_position(f: Function, a: float, b: float, rational: bool = False,
-                   iterated_data: bool = False) -> Union[float, Tuple[float, dict]]:
+                   swap: bool = False, iterated_data: bool = False) -> Union[float, Tuple[float, dict]]:
     """
     Using false-position method, returns root (or tupled with iterated data)
     - The same as bisection method, because the size of an interval
@@ -215,6 +232,10 @@ def false_position(f: Function, a: float, b: float, rational: bool = False,
     SameSign :
         - Raised when values of f(a) and f(b) has the same sign
 
+    AGreatB :
+        - Raised when the value of a is greater than b
+        - [Optional flag] - Swap the values
+
     Parameters
     ==========
     f :
@@ -236,6 +257,10 @@ def false_position(f: Function, a: float, b: float, rational: bool = False,
         - Returns fraction/rational value
         - Defaults to False
 
+    swap :
+        - Flag to prevent AGreatB Exception
+        - Defaults to False
+
     iterated_data:
         - Returns the iterated data in dictionary
         - Defaults to False
@@ -245,6 +270,14 @@ def false_position(f: Function, a: float, b: float, rational: bool = False,
     f = parse_expr(f, transformations=transformations)
     a = sympify(a)
     b = sympify(b)
+
+    if a > b:
+        z = a
+        a = b
+        b = z
+        del z
+    else:
+        raise AGreatB
 
     if f.subs(x, a) * f.subs(x, b) > 0.0:
         raise SameSigns

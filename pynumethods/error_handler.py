@@ -1,3 +1,10 @@
+class AGreatB(Exception):
+    '''Raised when a > b'''
+    def __init__(self, message='a cannot be greater than b') -> None:
+        self.message = message
+        super().__init__(self.message)
+
+
 class SameSigns(Exception):
     '''Raised when values of f(a) and f(b) has the same sign'''
     def __init__(self, message='f(a) and f(b) values has the same sign') -> None:

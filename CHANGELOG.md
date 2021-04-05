@@ -10,3 +10,7 @@
         - Fixed-point method
         - Newton-Raphson method
 - Returns a dictionary of the iterated data
+
+## 0.1.1 (05/04/2021)
+- Bracketing methods [issue #1](https://github.com/notjl/pynumethods/issues/1) fixed
+

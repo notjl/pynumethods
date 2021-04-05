@@ -1,4 +1,4 @@
-# Numerical Methods
+# pynumethods
 A Python library for root finding with various numerical methods.
 
 ## How to use

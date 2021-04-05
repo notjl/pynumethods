@@ -45,12 +45,12 @@ def newton_raphson(f: Function, n: float, rational: bool = False,
     1.763932022500022
 
     ** Turning rational True
-    >>> newton_raphson('x^2-8x+11', 1, rational=True)
-    3842389/2178309
+    >>> newton_raphson('x^3-3x+1', 0, rational=True)
+    170999/492372
 
     ** Turning iterated_data True
-    >>> newton_raphson('x**2-8*x+11', 1)
-    (1.763932022500022, {0: {'Xn': 1, 'fx': 4, 'fpx': -6, 'e%': None}, ...)
+    >>> newton_raphson('x^3-3x+1', 0, iterated_data=True)
+    (0.347296353163868, {0: {'Xn': 0, 'fx': 1, 'fpx': -3, 'e%': None}, ...)
 
     Iterated data
     =============

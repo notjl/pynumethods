@@ -38,15 +38,15 @@ def bisection(f: Function, a: float, b: float, error: float,
     ** Non-pythonic expressions will be parsed by SymPy module
     >>> from newton_raphson import newton_raphson
     >>> bisection('x^2-8x+11', 1, 2, 0.001)
-    (1.7646484375, None)
+    1.7646484375
 
     ** Using pythonic expressions is also accepted
     >>> bisection('x**2-8*x+11', 1, 2, 0.001)
-    (1.7646484375, None)
+    1.7646484375
 
     ** Turning rational True
-    >>> bisection('x^3-3x+1', 0, 1, 0.001)
-    (355/1024, None)
+    >>> bisection('x^3-3x+1', 0, 1, 0.001, rational=True)
+    355/1024
 
     ** Turning iterated_data True
     >>> bisection('x^3-3x+1', 0, 1, 0.001, iterated_data=True)

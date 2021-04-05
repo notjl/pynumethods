@@ -80,6 +80,9 @@ def bisection(f: Function, a: float, b: float, error: float,
     rational :
         - Returns fraction/rational value
         - Defaults to False
+
+    iterated_data:
+        - Returns the iterated data in dictionary
     """
 
     f = parse_expr(f, transformations=transformations)
@@ -112,7 +115,13 @@ def bisection(f: Function, a: float, b: float, error: float,
 
         count += 1
 
-    return (float(c) if not rational else c, data if iterated_data else None)
+    if not rational:
+        c = float(c)
+
+    if iterated_data:
+        return c, data
+    else:
+        return c
 
 
 def main():

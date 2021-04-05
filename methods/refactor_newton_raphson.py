@@ -14,13 +14,6 @@ transformations = standard_transformations + \
     (convert_xor, implicit_multiplication_application, function_exponentiation)
 
 
-# def wrapper_printer(fpXn=0, error=0, mode='default'):
-#     if mode == 'default':
-#         print(f'\n\nSince {error:.4f}% = 0.0000%, Xn is the root')
-#     elif mode == 'converge':
-#         print(f'\n\nSince {fpXn:.4f} is converging , Xn is the root')
-
-
 def newton_raphson(f: Function, n: float, rational: bool = False,
                    iterated_data: bool = False) -> Union[float, Tuple[float, list]]:
     """
@@ -54,6 +47,27 @@ def newton_raphson(f: Function, n: float, rational: bool = False,
     ** Turning rational True
     >>> newton_raphson('x^2-8x+11', 1, rational=True)
     3842389/2178309
+
+    ** Turning iterated_data True
+    >>> newton_raphson('x**2-8*x+11', 1)
+    (1.763932022500022, {0: {'Xn': 1, 'fx': 4, 'fpx': -6, 'e%': None}, ...)
+
+    Iterated data
+    =============
+    count / iteration :
+        - The first key you see in the dictionary
+
+    Xn :
+        - Value of the iterated approximate root
+
+    fx :
+        - Value of the f(n)
+
+    fpx :
+        - Value of the f'(n) [computed derived f(n)]
+    
+    e% :
+        - Percent error, how accurate the approximate root
 
     Exceptions
     ==========

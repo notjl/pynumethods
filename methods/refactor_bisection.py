@@ -50,7 +50,33 @@ def bisection(f: Function, a: float, b: float, error: float,
 
     ** Turning iterated_data True
     >>> bisection('x^3-3x+1', 0, 1, 0.001, iterated_data=True)
-    (0.3466796875, {1: {'a': 0, 'b': 1, 'c': 1/2, 'fa': 1...)
+    (0.3466796875, {1: {'a': 0, 'b': 1, 'c': 1/2, 'fa': 1, 'fc': -3/8, 'bc': 1/2, 'swap': 'b = c'}, ...)
+
+    Iterated data
+    =============
+    count / iteration :
+        - The first key you see in the dictionary
+
+    a :
+        - Value of the first interval
+
+    b :
+        - Value of the second interval
+
+    c :
+        - Value of (a + b)/2 [value of the root]
+
+    fa :
+        - Value of the f(a)
+
+    fc :
+        - Value of the f(c)
+    
+    bc :
+        - Value of (b - c)
+
+    swap :
+        - What values swapped
 
     Exceptions
     ==========

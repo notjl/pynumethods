@@ -8,7 +8,7 @@ with open('CHANGELOG.md', 'r', encoding='utf-8') as f:
 
 setup(
     name='pynumethods',
-    version='0.1.1',
+    version='0.1.2',
     author='NJL',
     author_email='njl.takode@gmail.com',
     description='Using various methods to find for the approximate root of function',

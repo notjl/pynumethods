@@ -83,9 +83,9 @@ def fixed_point(f: Function, n: float, rational: bool = False,
         - Mathematical expression
         - A mathematical function
         - Example: 
-            'x^2-8x+11'
-            'x**3-3*x+1'
-            'x^3+10x^2-5'
+            '(x^2+11)/8'
+            '(x**2+11)/8'
+            '(8x-11)/x'
 
     n :
         - the 'x' value of the function

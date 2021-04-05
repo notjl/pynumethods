@@ -22,7 +22,8 @@ def bisection(f: Function, a: float, b: float, error: float,
     processing.
 
     ..Note:
-        Return iterated_data defaults to False
+        - Return iterated_data defaults to False
+        - Always use 'x' as symbol
 
     Algorithm
     =========
@@ -69,13 +70,13 @@ def bisection(f: Function, a: float, b: float, error: float,
 
     a :
         - The first interval
-        
+
     b :
         - The second interval
-    
+
     error :
         - Error tolerance
-    
+
     rational :
         - Returns fraction/rational value
         - Defaults to False
@@ -121,28 +122,3 @@ def bisection(f: Function, a: float, b: float, error: float,
         return c, data
     else:
         return c
-
-
-def main():
-    formula = parse_expr(input('Formula >> '), transformations=transformations)
-    a = float(sympify(input('a Value >> ')))
-    b = float(sympify(input('b Value >> ')))
-    epsilon = float(sympify(input('Error Tolerance >> ')))
-
-    # root, data = bisection(f=formula, a=a, b=b, error=epsilon)
-    # data_to_list: list = []
-    # for data_key, data_value in data.items():
-    #     row: list = [data_key]
-    #     temp: list = []
-    #     for value_data_key, value_data_value in data_value.items():
-    #         temp.append(value_data_value)
-    #     row.extend(temp)
-    #     data_to_list.append(row)
-
-    # headers = ['[I]', 'a', 'b', 'c', 'f(a)', 'f(c)', '(b-c)', 'swap']
-    # floatformat = (None, '.4f', '.4f', '.4f', '.4f', '.4f', '.4f', None)
-    # print(tabulate(data_to_list, headers=headers, floatfmt=floatformat))
-
-
-if __name__ == '__main__':
-    main()
